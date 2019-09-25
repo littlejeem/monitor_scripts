@@ -1,5 +1,11 @@
 #!/bin/bash
 #
+############################################################################
+### This script should be installed on the relevant download machine.    ###
+### Primarily this is used as a VPN checker                              ###
+### It should by called via a sudo cron job to enable systemctl commands ###
+############################################################################
+#
 #
 #####################
 ### SET VARIABLES ###
