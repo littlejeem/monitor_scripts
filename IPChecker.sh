@@ -25,9 +25,10 @@ if [ "$EXPECTED_IP" == "$TESTED_IP" ]
  #
  #
   if test -f "$FILE"
-  then echo "$FILE exists, a reset has not been completed"
+  then echo "VPN Down but $FILE exists, a reset has not been completed"
      exit 0
   else
+  echo "VPN Down, stopping transmission-daemon"
   systemctl stop transmission-daemon
   curl -s \
     --form-string "token=$APP_TOKEN" \
