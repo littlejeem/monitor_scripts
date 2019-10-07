@@ -11,6 +11,7 @@
 ### SET & IMPORT VARIABLES ###
 ##############################
 TESTED_IP=$(curl ipinfo.io/ip)
+FILE=/tmp/IPChecker.lock
 source "$DIR1"/config.sh
 #
 #
@@ -19,14 +20,19 @@ source "$DIR1"/config.sh
 ###############
 if [ "$EXPECTED_IP" == "$TESTED_IP" ]
  then echo "UP"
-else
+ else
  echo "DOWN"
  #
  #
- systemctl stop transmission-daemon
- curl -s \
-   --form-string "token=$APP_TOKEN" \
-   --form-string "user=$USER_KEY" \
-   --form-string "message=VPN Down, transmission-daemon stopped" \
-   https://api.pushover.net/1/messages.json
+  if test -f "$FILE"
+  then echo "$FILE exists, a reset has not been completed"
+     exit 0
+  else
+  systemctl stop transmission-daemon
+  curl -s \
+    --form-string "token=$APP_TOKEN" \
+    --form-string "user=$USER_KEY" \
+    --form-string "message=VPN Down, transmission-daemon stopped" \
+    https://api.pushover.net/1/messages.json
+  fi
 fi
