@@ -14,3 +14,11 @@ cronjob="* * * * * $croncmd"
 ### RUN SCRIPT ###
 ##################
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+#
+#
+#################################
+### MODIFY SCRIPT PERMISSIONS ###
+#################################
+chmod +x IPChecker.sh
+#
+#
