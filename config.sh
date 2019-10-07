@@ -1,7 +1,7 @@
 ############################
 ### SCRIPT FILE LOCATION ###
 ############################
-DIR2=/home/USER/bin/
+DIR2="/home/USER/bin/" #<-----------alter USER to match the script user
 #
 #
 ####################
