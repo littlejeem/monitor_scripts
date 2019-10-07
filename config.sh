@@ -1,3 +1,9 @@
+#####################
+### SCRIPT FILE LOCATION
+###
+DIR2=/home/USER/bin/
+
+
 ####################
 ### IP ADDRESSES ###
 ####################
