@@ -27,4 +27,12 @@ if [ "$EXPECTED_IP" == "$TESTED_IP" ]
  then echo "UP"
 else
  echo "DOWN"
+ #
+ #
+ systemctl stop transmission-daemon
+ curl -s \
+   --form-string "token=$APP_TOKEN" \
+   --form-string "user=$USER_KEY" \
+   --form-string "message=VPN Down, transmission-daemon stopped" \
+   https://api.pushover.net/1/messages.json
 fi
