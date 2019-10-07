@@ -4,9 +4,9 @@
 ##############################
 ### SET & IMPORT VARIABLES ###
 ##############################
-DIR2=${PWD}
-source "$DIR2"/config.sh
-croncmd="$DIR2"/IPChecker.sh
+DIR1=${PWD}
+source "$DIR1"/config.sh
+croncmd="$DIR1"/IPChecker.sh
 cronjob="* * * * * $croncmd"
 #
 #
