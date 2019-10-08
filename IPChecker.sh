@@ -35,5 +35,6 @@ if [ "$EXPECTED_IP" == "$TESTED_IP" ]
     --form-string "user=$USER_KEY" \
     --form-string "message=VPN Down, transmission-daemon stopped" \
     https://api.pushover.net/1/messages.json
+    touch /tmp/IPConfig.lock
   fi
 fi
