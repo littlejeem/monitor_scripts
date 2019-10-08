@@ -7,7 +7,7 @@
 DIR1=${PWD}
 source "$DIR1"/config.sh
 croncmd="$DIR1"/IPChecker.sh
-cronjob="* * * * * $croncmd >> $log_location"
+cronjob="* * * * * $croncmd >> $log_location"/IPChecker.log 2>&1
 #
 #
 ##################
