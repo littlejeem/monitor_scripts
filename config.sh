@@ -2,8 +2,8 @@
 ### SCRIPT FILE LOCATIONS ###
 #############################
 SCRIPT_USER=""                                # enter intended script USER
-DIR2="/home/$SCRIPT_USER/bin/"                # installation parent directory of repository
-log_location="/home/$SCRIPT_USER/bin/logs/"   # log file location
+DIR2="/home/$SCRIPT_USER/bin"                # installation parent directory of repository
+log_location="/home/$SCRIPT_USER/bin/logs"   # log file location
 #
 #
 ####################
