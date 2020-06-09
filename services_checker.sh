@@ -10,9 +10,9 @@
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 #transmission-daemon=1
 jackett="1"
-lidarr="1"
-sonarr="1"
-radarr="1"
+lidarr="0"
+sonarr="0"
+radarr="0"
 #
 #
 #+----------------------+
@@ -25,7 +25,7 @@ function pushover ()
 #
 function Check_Service ()
 {
-  systemctl show -p SubState --value $service_name.service
+  check=$(systemctl show -p SubState --value $service_name.service)
 }
 #
 function check_selection ()
@@ -34,7 +34,7 @@ function check_selection ()
   if [[ "$section" -eq 1 ]]
   then
     Check_Service
-    if [ $? != "running" ]
+    if [ $check != "running" ]
     then
       message_form=$(echo "$service_name not running, sending error report and attempting restart of $service_name service")
       echo $message_form
@@ -42,7 +42,7 @@ function check_selection ()
       systemctl restart $service_name
       wait 1m
       Check_Service
-      if [ $? != "running" ]
+      if [ $check != "running" ]
       then
         message_form=$(echo "$service_name STILL not running, critical failure with $service_name.service, in-system investiation needed")
         echo $message_form
@@ -62,8 +62,8 @@ function check_selection ()
 #+------------------------+
 #+---"Import user info"---+
 #+------------------------+
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source $DIR/config.sh
+dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $dir_name/config.sh
 #
 #
 #+-------------------+
