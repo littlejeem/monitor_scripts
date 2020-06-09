@@ -50,6 +50,7 @@ function check_selection ()
         message_form=$(echo "$service_name successfully restarted")
         echo $message_form
         pushover
+      fi
     fi
   else
     echo "$service_name not selected for checking"
