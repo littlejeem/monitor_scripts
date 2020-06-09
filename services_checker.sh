@@ -66,17 +66,17 @@ source $dir_name/config.sh
 #+-------------------+
 #+---"Main Script"---+
 #+-------------------+
-service_name="transmission-daemon"
+service_name=${transmission-daemon}
 check_selection
 #
-service_name="jackett"
+service_name=${jackett}
 check_selection
 #
-service_name="lidarr"
+service_name=${lidarr}
 check_selection
 #
-service_name="sonarr"
+service_name=${sonarr}
 check_selection
 #
-service_name="radarr"
+service_name=${radarr}
 check_selection
