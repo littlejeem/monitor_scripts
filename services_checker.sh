@@ -9,10 +9,10 @@
 #+---------------------+
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 #transmission-daemon=1
-jackett=1
-lidarr=1
-sonarr=1
-radarr=1
+jackett="1"
+lidarr="1"
+sonarr="1"
+radarr="1"
 #
 #
 #+----------------------+
