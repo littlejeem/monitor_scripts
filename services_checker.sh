@@ -7,7 +7,8 @@
 #+---------------------+
 #+---"Set Variables"---+
 #+---------------------+
-transmissiondaemon=1
+PATH=/sbin:/bin:/usr/bin:/home/jlivin25
+transmission-daemon=1
 jackett=1
 lidarr=1
 sonarr=1
@@ -17,20 +18,49 @@ radarr=1
 #+----------------------+
 #+---Set up functions---+
 #+----------------------+
-function Check_Services ()
+function pushover ()
+{
+  curl -s --form-string token="$app_token" --form-string user="$user_token" --form-string message="$message_form" https://api.pushover.net/1/messages.json
+}
+#
+function Check_Service ()
 {
   systemctl show -p SubState --value $service_name.service
 }
-
+#
 function check_selection ()
 {
   if [ $service_name == "1" ]
   then
-    Check_Services
+    Check_Service
+    if [ $? != "running" ]
+    then
+      message_form=$(echo "$service_name not running, sending error report and attempting restart of $service_name service")
+      echo $message_form
+      pushover
+      systemctl restart $service_name
+      wait 1m
+      Check_Service
+      if [ $? != "running" ]
+      then
+        message_form=$(echo "$service_name STILL not running, critical failure with $service_name.service, in-system investiation needed")
+        echo $message_form
+        pushover
+      else
+        message_form=$(echo "$service_name successfully restarted")
+        echo $message_form
+        pushover
+    fi
   else
     echo "$service_name not selected for checking"
   fi
 }
+#
+#
+#+------------------------+
+#+---"Import user info"---+
+#+------------------------+
+source /monitor_scripts/config.sh
 #
 #
 #+-------------------+
