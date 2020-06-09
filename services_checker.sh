@@ -28,7 +28,7 @@ function Check_Service () {
 #
 function check_selection () {
 #  if [ $service_name == "1" ]
-  if [[ "$section" -eq 1 ]]
+  if [[ "$service_name" -eq 1 ]]
   then
     Check_Service
     if [ $check != "running" ]
