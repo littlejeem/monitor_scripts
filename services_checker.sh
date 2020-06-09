@@ -7,7 +7,7 @@
 #+---------------------+
 #+---"Set Variables"---+
 #+---------------------+
-PATH=/sbin:/bin:/usr/bin:/home/jlivin25
+#PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 #transmission-daemon=1
 jackett="1"
 lidarr="0"
@@ -18,18 +18,15 @@ radarr="0"
 #+----------------------+
 #+---Set up functions---+
 #+----------------------+
-function pushover ()
-{
+function pushover () {
   curl -s --form-string token="$app_token" --form-string user="$user_token" --form-string message="$message_form" https://api.pushover.net/1/messages.json
 }
 #
-function Check_Service ()
-{
+function Check_Service () {
   check=$(systemctl show -p SubState --value $service_name.service)
 }
 #
-function check_selection ()
-{
+function check_selection () {
 #  if [ $service_name == "1" ]
   if [[ "$section" -eq 1 ]]
   then
@@ -38,19 +35,19 @@ function check_selection ()
     then
       message_form=$(echo "$service_name not running, sending error report and attempting restart of $service_name service")
       echo $message_form
-      pushover
-      systemctl restart $service_name
+#      pushover
+#      systemctl restart $service_name
       wait 1m
       Check_Service
       if [ $check != "running" ]
       then
         message_form=$(echo "$service_name STILL not running, critical failure with $service_name.service, in-system investiation needed")
         echo $message_form
-        pushover
+#        pushover
       else
         message_form=$(echo "$service_name successfully restarted")
         echo $message_form
-        pushover
+#        pushover
       fi
     fi
   else
