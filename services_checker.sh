@@ -8,7 +8,7 @@
 #+---"Set Variables"---+
 #+---------------------+
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
-transmission-daemon=1
+#transmission-daemon=1
 jackett=1
 lidarr=1
 sonarr=1
