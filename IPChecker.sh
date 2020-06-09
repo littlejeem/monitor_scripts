@@ -31,8 +31,8 @@ if [ "$EXPECTED_IP" == "$TESTED_IP" ]
   echo "VPN Down, stopping transmission-daemon"
   systemctl stop transmission-daemon
   curl -s \
-    --form-string "token=$APP_TOKEN" \
-    --form-string "user=$USER_KEY" \
+    --form-string "token=$app_token" \
+    --form-string "user=$user_token" \
     --form-string "message=VPN Down, transmission-daemon stopped" \
     https://api.pushover.net/1/messages.json
     touch /tmp/IPChecker.lock
