@@ -29,7 +29,7 @@ function Check_Service () {
 function check_selection () {
   if [ "$service_selection" == "1" ]
   then
-    message_form=$(echo "$service_name selected for checking - service is running as expected")
+    message_form=$(echo "$service_name IS selected for checking")
     echo $message_form
     Check_Service
     if [ $check != "running" ]
@@ -52,7 +52,7 @@ function check_selection () {
       fi
     fi
   else
-    echo "$service_name not selected for checking"
+    echo "$service_name is NOT selected for checking"
   fi
 }
 #
