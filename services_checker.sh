@@ -9,7 +9,7 @@
 #+---------------------+
 #PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 #transmission-daemon=1
-jackett="1"
+jackett="0"
 lidarr="0"
 sonarr="0"
 radarr="0"
@@ -65,7 +65,8 @@ function check_selection () {
 #+-------------------+
 #+---"Main Script"---+
 #+-------------------+
-service_name=${transmission-daemon}
+service_name="transmisson-daemon"
+service_selection=${transmission-daemon}
 check_selection
 #
 service_name="jackett"
@@ -83,3 +84,4 @@ check_selection
 service_name="radarr"
 service_selection=${radarr}
 check_selection
+#
