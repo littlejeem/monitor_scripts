@@ -27,8 +27,7 @@ function Check_Service () {
 }
 #
 function check_selection () {
-#  if [ $service_name == "1" ]
-  if [[ "$service_name" -eq 1 ]]
+  if [ "$service_selection" == "1" ]
   then
     Check_Service
     if [ $check != "running" ]
@@ -59,8 +58,8 @@ function check_selection () {
 #+------------------------+
 #+---"Import user info"---+
 #+------------------------+
-dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source $dir_name/config.sh
+#dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+#source $dir_name/config.sh
 #
 #
 #+-------------------+
@@ -69,14 +68,18 @@ source $dir_name/config.sh
 service_name=${transmission-daemon}
 check_selection
 #
-service_name=${jackett}
+service_name="jackett"
+service_selection=${jackett}
 check_selection
 #
-service_name=${lidarr}
+service_name="lidarr"
+service_selection=${lidarr}
 check_selection
 #
-service_name=${sonarr}
+service_name="sonarr"
+service_selection=${sonarr}
 check_selection
 #
-service_name=${radarr}
+service_name="radarr"
+service_selection=${radarr}
 check_selection
