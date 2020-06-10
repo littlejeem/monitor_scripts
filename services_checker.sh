@@ -60,7 +60,8 @@ function check_selection () {
 #+------------------------+
 #+---"Import user info"---+
 #+------------------------+
-#dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo $dir_name
 #source $dir_name/config.sh
 #
 #
