@@ -9,7 +9,7 @@
 #+---------------------+
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 log=/home/pi/bin/script_logs/services_checker.log
-#transmission-daemon="1"
+transmission="0"
 jackett="0"
 lidarr="0"
 sonarr="0"
@@ -78,9 +78,9 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+-------------------+
 #+---"Main Script"---+
 #+-------------------+
-#service_name="transmisson-daemon"
-#service_selection=${transmission-daemon}
-#check_selection
+service_name="transmission-daemon"
+service_selection=${transmission}
+check_selection
 #
 service_name="jackett"
 service_selection=${jackett}
