@@ -16,9 +16,9 @@ sonarr="0"
 radarr="0"
 #
 #
-#+----------------------+
-#+---Set up functions---+
-#+----------------------+
+#+------------------------+
+#+---"Set up functions"---+
+#+------------------------+
 function pushover () {
   curl -s --form-string token="$app_token" --form-string user="$user_token" --form-string message="$message_form" https://api.pushover.net/1/messages.json
 }
@@ -69,7 +69,7 @@ echo "script STARTED" >> $log
 #+------------------------+
 #+---"Import user info"---+
 #+------------------------+
-#dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo $dir_name >> $log
 #source $dir_name/config.sh
 echo "I would source $dir_name/config.sh in real world" >> $log
