@@ -1,4 +1,4 @@
-#/bin/bash
+#!/usr/bin/env bash
 #
 #
 #A script to monitor activity of a number of services and if necessary notify the end user (me!)
@@ -7,8 +7,9 @@
 #+---------------------+
 #+---"Set Variables"---+
 #+---------------------+
-#PATH=/sbin:/bin:/usr/bin:/home/jlivin25
-#transmission-daemon=1
+PATH=/sbin:/bin:/usr/bin:/home/jlivin25
+log=/home/pi/bin/script_logs/services_checker.log
+#transmission-daemon="1"
 jackett="0"
 lidarr="0"
 sonarr="0"
@@ -30,12 +31,12 @@ function check_selection () {
   if [ "$service_selection" == "1" ]
   then
     message_form=$(echo "$service_name IS selected for checking")
-    echo $message_form
+    echo $message_form >> $log
     Check_Service
     if [ $check != "running" ]
     then
       message_form=$(echo "$service_name not running, sending error report and attempting restart of $service_name service")
-      echo $message_form
+      echo $message_form >> $log
 #      pushover
 #      systemctl restart $service_name
       wait 1m
@@ -43,34 +44,43 @@ function check_selection () {
       if [ $check != "running" ]
       then
         message_form=$(echo "$service_name STILL not running, critical failure with $service_name.service, in-system investiation needed")
-        echo $message_form
+        echo $message_form >> $log
 #        pushover
       else
         message_form=$(echo "$service_name successfully restarted")
-        echo $message_form
+        echo $message_form >> $log
 #        pushover
       fi
     fi
   else
-    echo "$service_name is NOT selected for checking"
+    echo "$service_name is NOT selected for checking" >> $log
   fi
 }
+#
+#
+#+---------------------+
+#+---"Start Logging"---+
+#+---------------------+
+echo "#" >> $log
+echo "-----------------------------------------------------------------------------" >> $log
+echo "script STARTED" >> $log
 #
 #
 #+------------------------+
 #+---"Import user info"---+
 #+------------------------+
-dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-echo $dir_name
+#dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo $dir_name >> $log
 #source $dir_name/config.sh
+echo "I would source $dir_name/config.sh in real world" >> $log
 #
 #
 #+-------------------+
 #+---"Main Script"---+
 #+-------------------+
-service_name="transmisson-daemon"
-service_selection=${transmission-daemon}
-check_selection
+#service_name="transmisson-daemon"
+#service_selection=${transmission-daemon}
+#check_selection
 #
 service_name="jackett"
 service_selection=${jackett}
@@ -87,4 +97,13 @@ check_selection
 service_name="radarr"
 service_selection=${radarr}
 check_selection
+#
+#
+#--------------------+
+#+---"Stop Logging---+
+#+-------------------+
+echo "script ENDED" >> $log
+echo "-----------------------------------------------------------------------------" >> $log
+echo "#" >> $log
+#
 #
