@@ -9,6 +9,7 @@
 #+---------------------+
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 log=/home/pi/bin/script_logs/services_checker.log
+stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 transmission="0"
 jackett="0"
 lidarr="0"
@@ -63,7 +64,7 @@ function check_selection () {
 #+---------------------+
 echo "#" >> $log
 echo "-----------------------------------------------------------------------------" >> $log
-echo "script STARTED" >> $log
+echo "script STARTED - $stamp" >> $log
 #
 #
 #+------------------------+
@@ -102,7 +103,7 @@ check_selection
 #--------------------+
 #+---"Stop Logging---+
 #+-------------------+
-echo "script ENDED" >> $log
+echo "script ENDED - $stamp" >> $log
 echo "-----------------------------------------------------------------------------" >> $log
 echo "#" >> $log
 #
