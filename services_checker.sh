@@ -19,6 +19,7 @@ function pushover1 () {
   curl -s \
     --form-string token="$app_token" \
     --form-string user="$user_token" \
+    --form-string title="$title" \
     --form-string message="$message_form" \
     https://api.pushover.net/1/messages.json
 }
