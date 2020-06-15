@@ -10,11 +10,6 @@
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 log=/home/pi/bin/script_logs/services_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
-transmission="0"
-jackett="0"
-lidarr="0"
-sonarr="0"
-radarr="0"
 #
 #
 #+------------------------+
@@ -38,19 +33,19 @@ function check_selection () {
     then
       message_form=$(echo "$service_name not running, sending error report and attempting restart of $service_name service")
       echo $message_form >> $log
-#      pushover
-#      systemctl restart $service_name
-      wait 1m
+      pushover
+      systemctl restart $service_name
+      sleep 1m
       Check_Service
       if [ $check != "running" ]
       then
         message_form=$(echo "$service_name STILL not running, critical failure with $service_name.service, in-system investiation needed")
         echo $message_form >> $log
-#        pushover
+        pushover
       else
         message_form=$(echo "$service_name successfully restarted")
         echo $message_form >> $log
-#        pushover
+        pushover
       fi
     fi
   else
@@ -72,7 +67,7 @@ echo "script STARTED - $stamp" >> $log
 #+------------------------+
 dir_name="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo $dir_name >> $log
-#source $dir_name/config.sh
+source $dir_name/config.sh
 echo "I would source $dir_name/config.sh in real world" >> $log
 #
 #
