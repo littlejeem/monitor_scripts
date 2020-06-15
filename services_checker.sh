@@ -15,7 +15,7 @@ stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 #+------------------------+
 #+---"Set up functions"---+
 #+------------------------+
-function pushover1 () {
+function pushover () {
   curl -s \
     --form-string token="$app_token" \
     --form-string user="$user_token" \
