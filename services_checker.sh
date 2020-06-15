@@ -15,8 +15,12 @@ stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 #+------------------------+
 #+---"Set up functions"---+
 #+------------------------+
-function pushover () {
-  curl -s --form-string token="$app_token" --form-string user="$user_token" --form-string message="$message_form" https://api.pushover.net/1/messages.json
+function pushover1 () {
+  curl -s \
+    --form-string token="$app_token" \
+    --form-string user="$user_token" \
+    --form-string message="$message_form" \
+    https://api.pushover.net/1/messages.json
 }
 #
 function Check_Service () {
