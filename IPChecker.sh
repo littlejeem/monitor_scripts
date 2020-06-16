@@ -14,7 +14,7 @@ function pushover () {
   curl -s \
     --form-string token="$app_token" \
     --form-string user="$user_token" \
-    --form-string title="VPN Checker" \
+    --form-string title="VPN & Internet Check" \
     --form-string message="$message_form" \
     https://api.pushover.net/1/messages.json
 }
@@ -54,18 +54,41 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+--------------------+
 if [ "$tested_ip" != "$expected_ip" ]
  then
-   echo "VPN is DOWN"
+   message_form=$(echo "VPN is DOWN")
+   echo $message_form >> $log
+   pushover
+   if test -f "$file_temp"
+   then
+     message_form=$(echo "Lock file $file_temp exists, a reset has either not been completed or script exited dirty, attention needed")
+     echo $message_form >> $log
+     pushover
+     exit 1
+   else
+     message_form=$(echo "Attempting to stop transmission-daemon")
+     echo $message_form >> $log
+     check=$(systemctl show -p SubState --value transmission-daemon.service)
+     if [ $check != "running" ]
+     then
+       message_form=$(echo "transmission-daemon is already 'stopped'")
+       echo $message_form >> $log
+     else
+       systemctl stop transmission-daemon
+       sleep 1m
+       if [ $check != "running" ]
+       then
+         message_form=$(echo "transmission-daemon successfully 'stopped'")
+         echo $message_form >> $log
+         pushover
+         exit 0
+       else
+         message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
+         pushover
+         exit 1
+       fi
+     fi
+   fi
  else
-   echo "VPN is UP"
- #
- #
-#  if test -f "$FILE"
-#  then echo "VPN Down but $FILE exists, a reset has not been completed"
-#     exit 0
-#  else
-#  echo "VPN Down, stopping transmission-daemon"
-#  systemctl stop transmission-daemon
-#  fi
+   echo "VPN is UP" >> $log
 fi
 #
 #
