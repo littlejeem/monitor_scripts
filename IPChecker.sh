@@ -52,7 +52,7 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+--------------------+
 #+---"Main Script"---+
 #+--------------------+
-if [ "$tested_ip" =! "$expected_ip" ]
+if [ "$tested_ip" != "$expected_ip" ]
  then
    echo "VPN is DOWN"
  else
