@@ -14,7 +14,7 @@ function pushover () {
   curl -s \
     --form-string token="$app_token" \
     --form-string user="$user_token" \
-    --form-string title="Services Checker" \
+    --form-string title="VPN Checker" \
     --form-string message="$message_form" \
     https://api.pushover.net/1/messages.json
 }
@@ -50,7 +50,7 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #
 #
 #+--------------------+
-#+---"Start Script"---+
+#+---"Main Script"---+
 #+--------------------+
 if [ "$tested_ip" =! "$expected_ip" ]
  then
@@ -64,6 +64,14 @@ if [ "$tested_ip" =! "$expected_ip" ]
 #     exit 0
 #  else
 #  echo "VPN Down, stopping transmission-daemon"
-#  systemctl stop transmission-daemon  
+#  systemctl stop transmission-daemon
 #  fi
 fi
+#
+#
+#--------------------+
+#+---"Stop Logging---+
+#+-------------------+
+echo "script ENDED - $stamp" >> $log
+echo "-----------------------------------------------------------------------------" >> $log
+echo "#" >> $log
