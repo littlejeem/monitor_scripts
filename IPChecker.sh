@@ -23,8 +23,8 @@ function pushover () {
 #+------------------------------+
 #+---"Set & Import Variables"---+
 #+------------------------------+
-PATH=/sbin:/bin:/usr/bin:/home/jlivin25
-log=/home/pi/bin/script_logs/services_checker.log
+PATH=/sbin:/bin:/usr/bin:/home/pi
+log=/home/pi/bin/script_logs/ip_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 #
 tested_ip=$(curl ipinfo.io/ip)
