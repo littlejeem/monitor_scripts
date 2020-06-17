@@ -19,17 +19,33 @@ function pushover () {
     https://api.pushover.net/1/messages.json
 }
 #
+function remove_lock () {
+  if [ -d "$lock" ]
+  then
+    echo "$lock folder exists, deleting" >> $log
+    rm -r $lock
+  else
+    echo "$lock folder not present" >> $log
+  fi
+}
 #
-#+------------------------------+
-#+---"Set & Import Variables"---+
-#+------------------------------+
+function end_log () {
+  #--------------------+
+  #+---"Stop Logging---+
+  #+-------------------+
+  echo "script ENDED - $stamp" >> $log
+  echo "-----------------------------------------------------------------------------" >> $log
+  echo "#" >> $log
+}
+#
+#+---------------------+
+#+---"Set Variables"---+
+#+---------------------+
 PATH=/sbin:/bin:/usr/bin:/home/pi
 log=/home/pi/bin/script_logs/ip_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
-#
 tested_ip=$(curl ipinfo.io/ip)
-#
-file_temp=/tmp/IPChecker.lock
+lock=/tmp/IPChecker
 #
 #
 #+---------------------+
@@ -57,13 +73,16 @@ if [ "$tested_ip" != "$expected_ip" ]
    message_form=$(echo "VPN is DOWN")
    echo $message_form >> $log
    pushover
-   if test -f "$file_temp"
+   if test -f "$lock"
    then
      message_form=$(echo "Lock file $file_temp exists, a reset has either not been completed or script exited dirty, attention needed")
      echo $message_form >> $log
      pushover
+     end_log
      exit 1
    else
+     mkdir $lock
+     echo "$lock created" >> $log
      message_form=$(echo "Attempting to stop transmission-daemon")
      echo $message_form >> $log
      check=$(systemctl show -p SubState --value transmission-daemon.service)
@@ -73,6 +92,8 @@ if [ "$tested_ip" != "$expected_ip" ]
        message_form=$(echo "transmission-daemon is already 'stopped'")
        echo $message_form >> $log
        pushover
+       remove_lock
+       end_log
        exit 0
      else
        systemctl stop transmission-daemon
@@ -84,17 +105,21 @@ if [ "$tested_ip" != "$expected_ip" ]
          message_form=$(echo "transmission-daemon successfully 'stopped'")
          echo $message_form >> $log
          pushover
-         rm $file_temp
+         remove_lock
+         end_log
          exit 0
        else
          message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
          pushover
+         end_log
          exit 1
        fi
      fi
    fi
  else
    echo "VPN is UP" >> $log
+   end_log
+   exit 0
 fi
 #
 #
