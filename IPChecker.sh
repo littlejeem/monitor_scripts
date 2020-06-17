@@ -67,6 +67,7 @@ if [ "$tested_ip" != "$expected_ip" ]
      message_form=$(echo "Attempting to stop transmission-daemon")
      echo $message_form >> $log
      check=$(systemctl show -p SubState --value transmission-daemon.service)
+     echo $check >> $log
      if [ $check != "running" ]
      then
        message_form=$(echo "transmission-daemon is already 'stopped'")
@@ -74,6 +75,8 @@ if [ "$tested_ip" != "$expected_ip" ]
      else
        systemctl stop transmission-daemon
        sleep 1m
+       check=$(systemctl show -p SubState --value transmission-daemon.service)
+       echo $check >> $log
        if [ $check != "running" ]
        then
          message_form=$(echo "transmission-daemon successfully 'stopped'")
