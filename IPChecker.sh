@@ -79,6 +79,7 @@ if [ "$tested_ip" != "$expected_ip" ]
          message_form=$(echo "transmission-daemon successfully 'stopped'")
          echo $message_form >> $log
          pushover
+         rm $file_temp
          exit 0
        else
          message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
