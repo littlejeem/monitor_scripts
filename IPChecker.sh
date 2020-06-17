@@ -72,6 +72,8 @@ if [ "$tested_ip" != "$expected_ip" ]
      then
        message_form=$(echo "transmission-daemon is already 'stopped'")
        echo $message_form >> $log
+       pushover
+       exit 0
      else
        systemctl stop transmission-daemon
        sleep 1m
@@ -102,3 +104,4 @@ fi
 echo "script ENDED - $stamp" >> $log
 echo "-----------------------------------------------------------------------------" >> $log
 echo "#" >> $log
+exit 0
