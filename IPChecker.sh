@@ -20,12 +20,12 @@ function pushover () {
 }
 #
 function remove_lock () {
-  if [ -d "$lock" ]
+  if [ -d "$script_lock" ]
   then
-    echo "$lock folder exists, deleting" >> $log
-    rm -r $lock
+    echo "$script_lock folder exists, deleting" >> $log
+    rm -r $script_lock
   else
-    echo "$lock folder not present" >> $log
+    echo "ERROR $script_lock folder not present" >> $log
   fi
 }
 #
@@ -45,7 +45,8 @@ PATH=/sbin:/bin:/usr/bin:/home/pi
 log=/home/pi/bin/script_logs/ip_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 tested_ip=$(curl ipinfo.io/ip)
-lock=/tmp/IPChecker
+script_lock=/tmp/IPChecker
+test_lock=""
 #
 #
 #+---------------------+
@@ -68,66 +69,56 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+--------------------+
 #+---"Main Script"---+
 #+--------------------+
-if [ "$tested_ip" != "$expected_ip" ]
+if test -d "$script_lock"
+ then
+   message_form=$(echo "Lock file $script_lock exists, script is already ruuning, or script exited dirty")
+   echo $message_form >> $log
+   end_log
+   exit 1
+elif [ "$tested_ip" != "$expected_ip" ]
  then
    message_form=$(echo "VPN is DOWN")
    echo $message_form >> $log
    pushover
-   if test -d "$lock"
-   then
-     message_form=$(echo "Lock file $file_temp exists, script is already ruuning, a reset has not been completed or script exited dirty, attention needed if further notifications received")
-     echo $message_form >> $log
-     pushover
-     end_log
-     exit 1
-   else
-     mkdir $lock
-     echo "$lock created" >> $log
-     message_form=$(echo "Attempting to stop transmission-daemon")
-     echo $message_form >> $log
-     pushover
-     check=$(systemctl show -p SubState --value transmission-daemon.service)
-     echo $check >> $log
-     if [ $check != "running" ]
-     then
-       message_form=$(echo "transmission-daemon is already 'stopped'")
-       echo $message_form >> $log
-       pushover
-       remove_lock
-       end_log
-       exit 0
-     else
-       systemctl stop transmission-daemon
-       sleep 1m
-       check=$(systemctl show -p SubState --value transmission-daemon.service)
-       echo $check >> $log
-       if [ $check != "running" ]
-       then
-         message_form=$(echo "transmission-daemon successfully 'stopped'")
-         echo $message_form >> $log
-         pushover
-         remove_lock
-         end_log
-         exit 0
-       else
-         message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
-         pushover
-         end_log
-         exit 1
-       fi
-     fi
-   fi
+   mkdir $script_lock
+   echo "$script_lock created" >> $log
+   message_form=$(echo "Attempting to stop transmission-daemon")
+   echo $message_form >> $log
+   pushover
+   check=$(systemctl show -p SubState --value transmission-daemon.service)
+   echo $check >> $log
+   if [ $check != "running" ]
+    then
+      message_form=$(echo "transmission-daemon is already 'stopped'")
+      echo $message_form >> $log
+      pushover
+      remove_lock
+      end_log
+      exit 0
+    else
+      systemctl stop transmission-daemon
+      sleep 1m
+      check=$(systemctl show -p SubState --value transmission-daemon.service)
+      echo $check >> $log
+      if [ $check != "running" ]
+      then
+        message_form=$(echo "transmission-daemon successfully 'stopped'")
+        echo $message_form >> $log
+        pushover
+        remove_lock
+        end_log
+        exit 0
+      else
+        message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
+        pushover
+        end_log
+        exit 1
+      fi
+    fi
  else
    echo "VPN is UP" >> $log
    end_log
    exit 0
-fi
+ fi
 #
 #
-#--------------------+
-#+---"Stop Logging---+
-#+-------------------+
-echo "script ENDED - $stamp" >> $log
-echo "-----------------------------------------------------------------------------" >> $log
-echo "#" >> $log
-exit 0
