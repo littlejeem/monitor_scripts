@@ -73,9 +73,9 @@ if [ "$tested_ip" != "$expected_ip" ]
    message_form=$(echo "VPN is DOWN")
    echo $message_form >> $log
    pushover
-   if test -f "$lock"
+   if test -d "$lock"
    then
-     message_form=$(echo "Lock file $file_temp exists, a reset has either not been completed or script exited dirty, attention needed")
+     message_form=$(echo "Lock file $file_temp exists, script is already ruuning, a reset has not been completed or script exited dirty, attention needed if further notifications received")
      echo $message_form >> $log
      pushover
      end_log
@@ -85,6 +85,7 @@ if [ "$tested_ip" != "$expected_ip" ]
      echo "$lock created" >> $log
      message_form=$(echo "Attempting to stop transmission-daemon")
      echo $message_form >> $log
+     pushover
      check=$(systemctl show -p SubState --value transmission-daemon.service)
      echo $check >> $log
      if [ $check != "running" ]
