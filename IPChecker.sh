@@ -46,7 +46,7 @@ log=/home/pi/bin/script_logs/ip_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
 tested_ip=$(curl ipinfo.io/ip)
 script_lock=/tmp/IPChecker
-test_lock=""
+notify_lock=/tmp/IPChecker_notify
 #
 #
 #+---------------------+
@@ -71,12 +71,18 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+--------------------+
 if test -d "$script_lock"
  then
-   message_form=$(echo "Lock file $script_lock exists, script is already ruuning, or script exited dirty")
+   message_form=$(echo "Lock file $script_lock exists, script is already running, or script exited dirty")
    echo $message_form >> $log
    end_log
    exit 1
 elif [ "$tested_ip" != "$expected_ip" ]
  then
+   if test -d "$notify_lock"
+   then
+     echo "Script previously run, VPN down, notifications sent but no reset action yet taken" >> $log
+     end_log
+     exit 0
+   fi
    message_form=$(echo "VPN is DOWN")
    echo $message_form >> $log
    pushover
