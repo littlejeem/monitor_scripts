@@ -99,6 +99,7 @@ elif [ "$tested_ip" != "$expected_ip" ]
       echo $message_form >> $log
       pushover
       remove_lock
+      mkdir $notify_lock
       end_log
       exit 0
     else
@@ -113,6 +114,7 @@ elif [ "$tested_ip" != "$expected_ip" ]
         pushover
         remove_lock
         end_log
+        mkdir $notify_lock
         exit 0
       else
         message_form=$(echo "failed to successfully 'stop' transmission-daemon, urgent attention required")
