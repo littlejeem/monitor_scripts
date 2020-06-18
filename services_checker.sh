@@ -10,6 +10,7 @@
 PATH=/sbin:/bin:/usr/bin:/home/jlivin25
 log=/home/pi/bin/script_logs/services_checker.log
 stamp=$(echo "`date +%H.%M`-`date +%d_%m_%Y`")
+notify_lock=/tmp/IPChecker_notify
 #
 #
 #+------------------------+
@@ -81,7 +82,12 @@ echo "I would source $dir_name/config.sh in real world" >> $log
 #+-------------------+
 service_name="transmission-daemon"
 service_selection=${transmission}
+if test -d "$notify_lock"
+then
+  echo "IPChecker.sh $notify_lock exist, aborting $service_name check" >> $log
+else
 check_selection
+fi
 #
 service_name="jackett"
 service_selection=${jackett}
