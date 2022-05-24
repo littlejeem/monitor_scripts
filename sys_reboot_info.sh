@@ -12,8 +12,7 @@
 ###                                                                                   ###
 ### [Unit]                                                                            ###
 ### Description=System Reboot Pushover Info                                           ###
-### After=network.target openvpn.service nordvpn.service                              ###
-### After=openvpn.service                                                             ###
+### After=network.target                                                              ###
 ### [Service]                                                                         ###
 ### User=$USER                                                                        ###
 ### Group=$GROUP                                                                      ###
