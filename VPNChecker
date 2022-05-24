@@ -227,8 +227,10 @@ edebug "PATH is: $PATH"
 #+---"Main Script Contents"---+
 #+----------------------------+
 ping -c "$ping_count" google.com > /dev/null
-if [[ $? -gt 1 ]]; then
-  ewarning "VPN killswitch activated"
+ping_result=$?
+edebug "ping result is: $ping_result"
+if [[ $ping_result -ge 1 ]]; then
+  ewarn "VPN killswitch activated"
   edebug "stopping transmission-daemon"
   if service --status-all | grep -Fq transmission-daemon; then
     systemctl stop transmission-daemon
@@ -236,24 +238,30 @@ if [[ $? -gt 1 ]]; then
   fi
   edebug "disconnecting from VPN"
   nordvpn disconnect
-  sleep 20
+  sleep 2
+  #nordvpn rate 1
+  sleep 10
   edebug "reconnecting to VPN"
   nordvpn connect
-  sleep 20
+  sleep 10
   ping -c "$ping_count" google.com > /dev/null
-  if [[ $? -eq 0 ]]; then
+  ping_result=$?
+  edebug "ping result is: $ping_result"
+  if [[ $ping_result -eq 0 ]]; then
     enotify "Successfuly reconnected to VPN"
     edebug "restarting transmission-daemon"
-    STATUS="$(systemctl is-active transmission-daemon)"
-    if [ "${STATUS}" = "active" ]; then
+    systemctl start transmission-daemon
+    sleep 3
+    transmission_status="$(systemctl is-active transmission-daemon)"
+    if [ "${transmission_status}" = "active" ]; then
       edebug "restarted transmission-daemon"
     else
-      error "failed to start transmission-daemon"
+      eerror "failed to start transmission-daemon"
     fi
   else
     eerror "Problem reconnecting to VPN, investigation needed"
   fi
-elif [[ $? -eq 0 ]]; then
+elif [[ $ping_result -eq 0 ]]; then
   einfo "VPN Connected all ok"
 fi
 
