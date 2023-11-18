@@ -186,6 +186,8 @@ edebug "PATH is: $PATH"
 #+----------------------------+
 #+---"Main Script Contents"---+
 #+----------------------------+
+#import sync_reboot_token from config.sh and apply it to application_token in the generic pushover function
+application_token="$sync_reboot_token"
 #get internal machine info
 machine_ip=$(hostname -I | cut -d ' ' -f 1)
 edebug "Machine IP: $machine_ip"
